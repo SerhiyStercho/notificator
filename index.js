@@ -28,7 +28,7 @@ app.post('/utask',function(req,res){
     var j = schedule.scheduleJob(date, function(){
         console.log(`Пора ${requestBody.taskName}`);
 
-        fcm.send(createMessage(requestBody.token, requestBody.taskName,'body'), function(err, response){
+        fcm.send(createMessage(requestBody.token, requestBody.taskName, requestBody.taskBody), function(err, response){
             if (err) {
                 console.log("Something has gone wrong!");
                 console.log(err);
@@ -44,18 +44,16 @@ let createMessage = function(token, t, b){
         to: token, 
         
         notification: {
-            tag: "new_messages",
             title: t,
-            priority: 'high',
-            badge: '4', 
+            priority: 'high', 
             body: b,
             sound: 'default'
         }
-
-        //collapse_key: "new_messages"
     };
 
     return message;
 }
 
-app.listen(port, 'https://notificator-v1.herokuapp.com/', function(){});
+app.listen(port);
+
+//app.listen(port, 'https://notificator-v1.herokuapp.com/', function(){});
